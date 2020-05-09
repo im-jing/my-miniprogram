@@ -1,2 +1,1 @@
-# notes
-frontend technology notes
+...
