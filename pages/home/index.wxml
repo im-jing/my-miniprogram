@@ -1,3 +1,11 @@
-<view>
-  home page
+<view class="page page-home">
+  <view class="section-title">书籍</view>
+  <view class="book-list">
+    <view class="book-item" wx:for="{{hotBookListData}}" wx:key="id" data-item="{{item}}" bindtap="linkToDetail">
+      <image mode="aspectFill" src="{{item.image}}"></image>
+      <view class="book-content">
+        {{item.title}}
+      </view>
+    </view>
+  </view>
 </view>

@@ -1,6 +1,7 @@
 {
   "pages": [
-    "pages/home/index"
+    "pages/home/index",
+    "pages/detail/index"
   ],
   "window": {
     "navigationBarTitleText": "Demo"
@@ -10,5 +11,6 @@
     "downloadFile": 10000
   },
   "debug": true,
-  "navigateToMiniProgramAppIdList": []
+  "navigateToMiniProgramAppIdList": [],
+  "sitemapLocation": "sitemap.json"
 }

@@ -1,0 +1,4 @@
+.icon {
+  width: 32rpx;
+  height: 28rpx;
+}

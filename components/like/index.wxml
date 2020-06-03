@@ -1,0 +1,2 @@
+<image bindtap="handleTap" class="icon" src="{{ status ? likeImg : dislikeImg }}"></image>
+<text>{{count}}</text>
