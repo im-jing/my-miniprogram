@@ -1,6 +1,5 @@
 import { HTTP } from '../../utils/http'
 import { magazineLatest } from '../../request/classic/latest.get'
-import { favor } from '../../request/book/one.favor.get'
 
 const http = new HTTP()
 
@@ -23,7 +22,6 @@ Page({
    */
   onShow() {
     this.getClickedItemData()
-    this.getLikeStatus()
     // this.getMagazineLatest()
   },
 
@@ -53,19 +51,6 @@ Page({
         date: res.pubdate.split('-')[2],
         month: res.pubdate.split('-')[1],
         year: res.pubdate.split('-')[0],
-      })
-    })
-  },
-
-  getLikeStatus() {
-    console.log(this.data.id, '=id=')
-    const params = {
-      art_id: this.data.id,
-    }
-    favor(params, res => {
-      this.setData({
-        status: res.like_status === 1,
-        count: res.fav_nums,
       })
     })
   },

@@ -1,11 +1,10 @@
-import { HTTP } from '../../utils/http'
+import { HTTP } from '../../utils/http-p'
 const http = new HTTP()
 
-const hotBookList = (callback) => {
-  const params = {
+const hotBookList = () => {
+  return http.request({
     url: '/book/hot_list',
-  }
-  http.request(params, callback)
+  })
 }
 
 export { hotBookList }

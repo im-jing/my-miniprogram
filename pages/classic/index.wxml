@@ -10,7 +10,7 @@
         </view>
       </view>
       <view class="magazine-header-right">
-        <v-like status="{{status}}" count="{{count}}" bind:like="onLike"></v-like>
+        <v-like status="{{status}}" count="{{count}}" bind:like="switchLike"></v-like>
       </view>
     </view>
     <view class="poster">

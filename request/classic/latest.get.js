@@ -1,11 +1,10 @@
-import { HTTP } from '../../utils/http'
+import { HTTP } from '../../utils/http-p'
 const http = new HTTP()
 
-const magazineLatest = (callback) => {
-  const params = {
+const magazineLatest = () => {
+  return http.request({
     url: '/classic/latest',
-  }
-  http.request(params, callback)
+  })
 }
 
 export { magazineLatest }

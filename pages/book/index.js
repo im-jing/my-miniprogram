@@ -17,7 +17,7 @@ Page({
   },
 
   gethotBookList() {
-    hotBookList(res => {
+    hotBookList().then(res => {
       this.setData({
         hotBookListData: res
       })
