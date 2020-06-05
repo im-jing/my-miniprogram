@@ -27,7 +27,7 @@ Page({
   linkToDetail(e) {
     const { item } = e.currentTarget.dataset
     wx.navigateTo({
-      url: '/pages/detail/index',
+      url: '/pages/book-detail/index',
       success: (res)=>{
         res.eventChannel.emit('itemData', {data: item})
       },

@@ -1,7 +1,8 @@
 {
   "pages": [
-    "pages/home/index",
-    "pages/detail/index"
+    "pages/book/index",
+    "pages/book-detail/index",
+    "pages/classic/index"
   ],
   "window": {
     "navigationBarTitleText": "Demo"

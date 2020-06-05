@@ -13,6 +13,7 @@ class HTTP {
     wx.request({
       url: config.baseUrl + params.url,
       method: params.method || 'GET',
+      // TODO: params没有data，默认值应该设置成什么
       data: params.data,
       header: {
         'content-type': 'application/json',

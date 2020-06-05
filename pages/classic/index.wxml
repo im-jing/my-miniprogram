@@ -1,0 +1,22 @@
+<view class="page page-home">
+    <view class="magazine-header">
+      <view class="magazine-header-left">
+        <view class="date">
+          No.<text class="num">{{ date }}</text>
+        </view>
+        <view class="month-year">
+          <view class="month">{{ month }}</view>
+          <view class="year">{{ year }}</view>
+        </view>
+      </view>
+      <view class="magazine-header-right">
+        <v-like status="{{status}}" count="{{count}}" bind:like="onLike"></v-like>
+      </view>
+    </view>
+    <view class="poster">
+      <image class="" src="{{magazineLatestData.image}}" mode="aspectFill" lazy-load="false" binderror="" bindload="">
+        
+      </image>
+    </view>
+    <view class="content">{{title}}</view>
+  </view>

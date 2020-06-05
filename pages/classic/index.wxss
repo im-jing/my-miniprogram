@@ -1,0 +1,29 @@
+.magazine-header {
+    display: flex;
+    justify-content: space-between;
+    margin: 32rpx;
+  }
+  .magazine-header-left {
+    display: inline-flex;
+    align-items: center;
+  }
+  .magazine-header-left .date{
+    padding-right: 32rpx;
+  }
+  .magazine-header-left .date .num {
+    font-size: 60rpx;
+  }
+  .magazine-header-left .month-year {
+    display: flex;
+    flex-direction: column;
+    padding-left: 32rpx;
+    border-left: 1px solid #333;
+    line-height: 100%;
+  }
+  .magazine-header-right {
+    display: inline-flex;
+    align-items: center;
+  }
+  .poster image {
+    width: 100%;
+  }

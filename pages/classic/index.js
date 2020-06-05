@@ -1,5 +1,6 @@
 import { HTTP } from '../../utils/http'
 import { magazineLatest } from '../../request/classic/latest.get'
+import { favor } from '../../request/classic/one.favor.get'
 
 const http = new HTTP()
 
@@ -14,28 +15,18 @@ Page({
     year: '',
     status: false,
     count: 0,
+    id: 0,
+    type: 100,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onShow() {
-    const eventChannel = this.getOpenerEventChannel()
-    eventChannel.on('itemData', (data) => {
-      const res = data.data
-      this.setData({
-        magazineLatestData: res,
-        id: res.id,
-        status: res.like_status === 1,
-        count: res.fav_nums,
-        author: res.author,
-        title: res.title,
-        image: res.image,
-      })
-    })
-    // this.getMagazineLatest()
+    this.getMagazineLatest()
   },
 
+  // 获取最新期刊
   getMagazineLatest() {
     magazineLatest(res => {
       this.setData({
@@ -45,6 +36,21 @@ Page({
         date: res.pubdate.split('-')[2],
         month: res.pubdate.split('-')[1],
         year: res.pubdate.split('-')[0],
+      })
+      // TODO: 优化请求先后依赖问题
+      this.getLikeStatus(res.id, res.type)
+    })
+  },
+
+  // 获取like的相关信息
+  getLikeStatus(id, type) {
+    console.log(id, type)
+    const params = {
+      art_id: id,
+      type,
+    }
+    favor(params, res => {
+      this.setData({
         status: res.like_status === 1,
         count: res.fav_nums,
       })
