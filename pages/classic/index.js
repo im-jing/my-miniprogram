@@ -26,6 +26,7 @@ Page({
 
   // 获取最新期刊
   getMagazineLatest() {
+    wx.showLoading()
     magazineLatest()
       .then(res => {
         this.setData({
@@ -45,6 +46,7 @@ Page({
         return favor(params)
       })
       .then(res => {
+        wx.hideLoading()
         this.setData({
           status: res.like_status === 1,
           count: res.fav_nums,
