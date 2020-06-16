@@ -1,5 +1,6 @@
 import { hotBookList } from '../../request/book/hot_list.get'
 import { hotKeyword } from '../../request/book/hot_keyword'
+import { random } from '../../utils/common'
 
 Page({
 
@@ -7,9 +8,11 @@ Page({
    * 页面的初始数据
    */
   data: {
-    searchingL: false,
+    searching: false,
+    loadMore: null,
     hotBookData: [],
     hotKeyword: [],
+
   },
 
   /**
@@ -61,10 +64,10 @@ Page({
     })
   },
 
+  // onReachBottom是page才有的方法，组件内没有该方法，通过properties把这个状态传给子组件
   onReachBottom() {
-    console.log('=onReachBottom=')
     this.setData({
-
+      loadMore: random(16),
     })
   }
 })

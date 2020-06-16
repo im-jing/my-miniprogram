@@ -8,11 +8,11 @@
     </view>
 
     <view class="books-container">
-      <block wx:for="{{hotBookData}}" wx:key="{{item.id}}">
+      <block wx:for="{{hotBookData}}" wx:key="unique">
         <v-book showLike="{{false}}" book="{{item}}" class="book-item" />
       </block>
     </view>
   </view>
 
-  <v-search wx:else bind:cancel="onCancel" hot-keyword="{{hotKeyword}}"></v-search>
+  <v-search wx:else bind:cancel="onCancel" hot-keyword="{{hotKeyword}}" loadMore="{{loadMore}}"></v-search>
 </view>
