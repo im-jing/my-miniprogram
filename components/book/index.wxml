@@ -1,2 +1,6 @@
-<!--components/book/index.wxml-->
-<text>components/book/index.wxml</text>
+<block>
+  <image mode="aspectFill" src="{{bookItem.image}}"></image>
+  <view class="book-content">
+    {{bookItem.title}}
+  </view>
+</block>

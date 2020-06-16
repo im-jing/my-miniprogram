@@ -1,10 +1,11 @@
+// components/tag/index.js
 Component({
   /**
    * 组件的属性列表
    */
   properties: {
-    book: {
-      type: Object,
+    text: {
+      type: String,
     }
   },
 
@@ -12,20 +13,23 @@ Component({
    * 组件的初始数据
    */
   data: {
-    bookItem: {},
+    text: null,
   },
 
   attached() {
     this.setData({
-      bookItem: this.properties.book,
+      text: this.properties.text,
     })
   },
-  
 
   /**
    * 组件的方法列表
    */
   methods: {
-
+    onTap() {
+      this.triggerEvent('tapping', {
+        text: this.properties.text,
+      })
+    }
   }
 })

@@ -1,4 +1,5 @@
 import { hotBookList } from '../../request/book/hot_list.get'
+import { hotKeyword } from '../../request/book/hot_keyword'
 
 Page({
 
@@ -6,22 +7,44 @@ Page({
    * 页面的初始数据
    */
   data: {
-    hotBookListData: [],
+    searchingL: false,
+    hotBookData: [],
+    hotKeyword: [],
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad() {
-    this.gethotBookList()
+    this.getData()
   },
 
-  gethotBookList() {
-    hotBookList().then(res => {
-      this.setData({
-        hotBookListData: res
-      })
+  // 点击页面上"搜索书籍"按钮
+  onTapSearch() {
+    this.setData({
+      searching: true,
     })
+  },
+
+  onCancel() {
+    this.setData({
+      searching: false,
+    })
+  },
+
+  async getData() {
+    wx.showLoading()
+    try {
+      const res1 = await hotBookList()
+      const res2 = await hotKeyword()
+      this.setData({
+        hotBookData: res1,
+        hotKeyword: res2.hot,
+      })
+      wx.hideLoading()
+    } catch(err) {
+      console.log(err)
+    }
   },
   
   linkToDetail(e) {
@@ -37,4 +60,11 @@ Page({
       complete: ()=>{}
     })
   },
+
+  onReachBottom() {
+    console.log('=onReachBottom=')
+    this.setData({
+
+    })
+  }
 })

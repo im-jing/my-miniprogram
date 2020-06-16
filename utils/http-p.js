@@ -23,7 +23,6 @@ class HTTP {
         success: (res) => {
           const errorCode =  res.statusCode.toString()
           if (errorCode.startsWith('2')) {
-            console.log(res.data, 'res.data')
             resolve(res.data)
           } else {
             reject()
