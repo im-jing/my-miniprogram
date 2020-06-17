@@ -1,5 +1,5 @@
-import { KeywordsModel } from "../../models/keywords"
-import { bookSearch } from "../../request/book/search"
+import KeywordsModel from '../../models/keywords'
+import { bookSearch } from '../../request/book/search'
 
 const keywordsModel = new KeywordsModel()
 
@@ -14,8 +14,8 @@ Component({
     },
     loadMore: {
       type: String,
-      observer: 'loadMoreBook', //值有改变，才会执行observer; 每次onReachBottom都向子组件传递一个随机数
-    }
+      observer: 'loadMoreBook', // 值有改变，才会执行observer; 每次onReachBottom都向子组件传递一个随机数
+    },
   },
 
   /**
@@ -37,7 +37,7 @@ Component({
 
   attached() {
     const that = this
-    
+
     // 从storage里获取history keyword
     wx.getStorage({
       key: 'history',
@@ -47,7 +47,7 @@ Component({
             historyWords: res.data,
           })
         }
-      }
+      },
     })
 
     this.getHotKeyword()
@@ -114,7 +114,7 @@ Component({
 
     // 根据keywords搜索
     onSearch(q, s) {
-      if(!q) return
+      if (!q) return
 
       wx.showLoading()
       const { count } = this.data.pagination
@@ -125,44 +125,51 @@ Component({
         summary: 1, // 默认为0,0为完整内容,1为简介
         q,
       }
-      
-      bookSearch(params).then(res => {
-        wx.hideLoading()
-        this.setData({
-          searching: true,
-          searchResult: res.books,
-          'pagination.total': res.total,
+
+      bookSearch(params)
+        .then((res) => {
+          wx.hideLoading()
+          this.setData({
+            searching: true,
+            searchResult: res.books,
+            'pagination.total': res.total,
+          })
         })
-      })
+        .catch(() => {
+          wx.hideLoading()
+        })
     },
 
     // 检查是否还有下一页,上拉加载更多数据
     loadMoreBook() {
-      
       const { q, searchResult } = this.data
       const { start, count, total } = this.data.pagination
-      let s = start + count
+      const currentStart = start + count
 
-      if (s > total) return
+      if (currentStart > total) return
       if (this.data.loading) return
 
-      // loading赋值这里可以不用setData, 如果wxml里要用到这个loading,则必须用setData
+      // loading赋值这里可以不用setData, 如果要把loading值赋值到wxml里,则必须用setData
       this.data.loading = true
-      
+
       const params = {
-        start: s,
+        start: currentStart,
         count,
         summary: 1, // 默认为0,0为完整内容,1为简介
         q,
       }
-      bookSearch(params).then(res => {
-        wx.hideLoading()
-        this.setData({
-          'pagination.start': s,
-          searchResult: searchResult.concat(res.books)
+      bookSearch(params)
+        .then((res) => {
+          wx.hideLoading()
+          this.setData({
+            'pagination.start': currentStart,
+            searchResult: searchResult.concat(res.books),
+          })
+          this.data.loading = false
         })
-        this.data.loading = false
-      })
+        .catch(() => {
+          wx.hideLoading()
+        })
     },
-  }
+  },
 })

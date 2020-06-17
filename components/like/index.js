@@ -8,7 +8,7 @@ Component({
     },
     count: {
       type: Number,
-    }
+    },
   },
 
   /**
@@ -24,9 +24,9 @@ Component({
    */
   methods: {
     handleTap() {
-      const status = this.properties.status
+      const { status } = this.properties
 
-      this.triggerEvent('like', {status: !status}, {})
-    }
-  }
+      this.triggerEvent('like', { status: !status }, {})
+    },
+  },
 })

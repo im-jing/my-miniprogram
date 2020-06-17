@@ -5,7 +5,7 @@ Component({
   properties: {
     book: {
       type: Object,
-    }
+    },
   },
 
   /**
@@ -20,12 +20,9 @@ Component({
       bookItem: this.properties.book,
     })
   },
-  
 
   /**
    * 组件的方法列表
    */
-  methods: {
-
-  }
+  methods: {},
 })
