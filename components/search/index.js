@@ -1,9 +1,11 @@
 import KeywordsModel from '../../models/keywords'
 import { bookSearch } from '../../request/book/search'
+import paginationBehavior from '../behaviors/pagination'
 
 const keywordsModel = new KeywordsModel()
 
 Component({
+  behaviors: [paginationBehavior],
   /**
    * 组件的属性列表
    */
@@ -22,16 +24,14 @@ Component({
    * 组件的初始数据
    */
   data: {
-    searching: false,
+    searching: false, // 书籍首页，点击了搜索书籍按钮为true
     loading: false, // 接口是否请求中
     historyWords: [],
     hotWords: [],
-    searchResult: [],
     q: '',
     pagination: {
       start: 0,
       count: 20,
-      total: 0,
     },
   },
 
@@ -69,26 +69,19 @@ Component({
       this.setData({
         q: '',
         searching: false,
-        searchResult: [],
-        'pagination.start': 0,
-        'pagination.total': 0,
       })
+      this.initData()
     },
 
     // 点击取消事件
     onCancel() {
       this.triggerEvent('cancel', {}, {})
-      this.setData({
-        searchResult: [],
-        'pagination.start': 0,
-        'pagination.total': 0,
-      })
+      this.initData()
     },
 
     // input回车刷新keywords
     onConfirm(e) {
       const val = e.detail.value
-      keywordsModel.addToHistory(val)
 
       const historyWords = keywordsModel.getHistory()
       this.setData({
@@ -113,12 +106,12 @@ Component({
     },
 
     // 根据keywords搜索
-    onSearch(q, s) {
+    onSearch(q) {
       if (!q) return
 
       wx.showLoading()
-      const { count } = this.data.pagination
-      const start = s || this.data.pagination.start
+      const { start, count } = this.data.pagination
+
       const params = {
         start,
         count,
@@ -129,11 +122,14 @@ Component({
       bookSearch(params)
         .then((res) => {
           wx.hideLoading()
+          this.setMoreData(res.books)
+          this.setTotal(res.total)
           this.setData({
             searching: true,
-            searchResult: res.books,
-            'pagination.total': res.total,
           })
+
+          // 能搜索到结果的有效keywords存入storage
+          if (res.total > 0) keywordsModel.addToHistory(q)
         })
         .catch(() => {
           wx.hideLoading()
@@ -142,18 +138,17 @@ Component({
 
     // 检查是否还有下一页,上拉加载更多数据
     loadMoreBook() {
-      const { q, searchResult } = this.data
-      const { start, count, total } = this.data.pagination
-      const currentStart = start + count
+      const { q } = this.data
+      const { count } = this.data.pagination
 
-      if (currentStart > total) return
+      if (!this.hasMore()) return
       if (this.data.loading) return
 
       // loading赋值这里可以不用setData, 如果要把loading值赋值到wxml里,则必须用setData
       this.data.loading = true
 
       const params = {
-        start: currentStart,
+        start: this.getCurrentStart(),
         count,
         summary: 1, // 默认为0,0为完整内容,1为简介
         q,
@@ -161,10 +156,7 @@ Component({
       bookSearch(params)
         .then((res) => {
           wx.hideLoading()
-          this.setData({
-            'pagination.start': currentStart,
-            searchResult: searchResult.concat(res.books),
-          })
+          this.setMoreData(res.books)
           this.data.loading = false
         })
         .catch(() => {
