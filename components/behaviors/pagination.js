@@ -4,10 +4,17 @@ const paginationBehavior = Behavior({
   data: {
     dataArray: [],
     total: 0,
+    loadingCenter: false, // 页面请求接口
+    loading: false, // 接口是否请求中(包括分页请求)
+    noneResult: false,
   },
   methods: {
     setTotal(total) {
       this.data.total = total
+
+      this.setData({
+        noneResult: total <= 0,
+      })
     },
 
     getCurrentStart() {
@@ -26,11 +33,36 @@ const paginationBehavior = Behavior({
       return this.getCurrentStart() < this.data.total
     },
 
+    showLoadingCenter() {
+      this.setData({
+        loadingCenter: true,
+      })
+    },
+
+    hideLoadingCenter() {
+      this.setData({
+        loadingCenter: false,
+      })
+    },
+
+    showPaginationLoading() {
+      this.setData({
+        loading: true,
+      })
+    },
+
+    hidePaginationLoading() {
+      this.setData({
+        loading: false,
+      })
+    },
+
     initData() {
       this.setData({
         dataArray: [],
         total: 0,
         'pagination.start': 0,
+        noneResult: false,
       })
     },
   },

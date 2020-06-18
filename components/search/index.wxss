@@ -87,7 +87,6 @@
 
 .books-container {
     width: 570rpx;
-    height: 500rpx;
     margin-top: 100rpx;
     display: flex;
     flex-direction: row;

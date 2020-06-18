@@ -16,7 +16,7 @@ Component({
     },
     loadMore: {
       type: String,
-      observer: 'loadMoreBook', // 值有改变，才会执行observer; 每次onReachBottom都向子组件传递一个随机数
+      observer: 'loadMore', // 值有改变，才会执行observer; 每次onReachBottom都向子组件传递一个随机数
     },
   },
 
@@ -25,7 +25,6 @@ Component({
    */
   data: {
     searching: false, // 书籍首页，点击了搜索书籍按钮为true
-    loading: false, // 接口是否请求中
     historyWords: [],
     hotWords: [],
     q: '',
@@ -109,7 +108,7 @@ Component({
     onSearch(q) {
       if (!q) return
 
-      wx.showLoading()
+      this.showLoadingCenter()
       const { start, count } = this.data.pagination
 
       const params = {
@@ -121,7 +120,7 @@ Component({
 
       bookSearch(params)
         .then((res) => {
-          wx.hideLoading()
+          this.hideLoadingCenter()
           this.setMoreData(res.books)
           this.setTotal(res.total)
           this.setData({
@@ -132,20 +131,19 @@ Component({
           if (res.total > 0) keywordsModel.addToHistory(q)
         })
         .catch(() => {
-          wx.hideLoading()
+          this.hideLoadingCenter()
         })
     },
 
     // 检查是否还有下一页,上拉加载更多数据
-    loadMoreBook() {
+    loadMore() {
       const { q } = this.data
       const { count } = this.data.pagination
 
       if (!this.hasMore()) return
       if (this.data.loading) return
 
-      // loading赋值这里可以不用setData, 如果要把loading值赋值到wxml里,则必须用setData
-      this.data.loading = true
+      this.showPaginationLoading()
 
       const params = {
         start: this.getCurrentStart(),
@@ -155,12 +153,11 @@ Component({
       }
       bookSearch(params)
         .then((res) => {
-          wx.hideLoading()
           this.setMoreData(res.books)
-          this.data.loading = false
+          this.hidePaginationLoading()
         })
         .catch(() => {
-          wx.hideLoading()
+          this.hidePaginationLoading()
         })
     },
   },
