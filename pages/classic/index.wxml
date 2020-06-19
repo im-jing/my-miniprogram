@@ -11,6 +11,9 @@
       </view>
       <view class="magazine-header-right">
         <v-like status="{{status}}" count="{{count}}" bind:like="switchLike"></v-like>
+        <v-button openType="share" class="share-btn">
+          <image class="share" slot="img" mode="aspectFill" src="../../images/icon/share.png" />
+        </v-button>
       </view>
     </view>
     <view class="poster">

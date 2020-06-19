@@ -21,30 +21,11 @@ Component({
    * 组件的方法列表
    */
   methods: {
-    // 判断用户是否授权过
-    getAuthSetting() {
-      wx.getSetting({
-        success: (res) => {
-          const authSetting = res.authSetting['scope.userInfo']
-          if (authSetting) this.getUserInfo()
-        },
-      })
-    },
+    onGetUserInfo(e) {
+      const userInfo = e.detail.rawData
 
-    // 获取用户信息
-    getUserInfo() {
-      wx.getUserInfo({
-        success: (res) => {
-          const result = JSON.parse(res.rawData)
-
-          this.onGetUserInfo(result)
-          wx.setStorageSync('userInfo', JSON.stringify(result))
-        },
-      })
-    },
-
-    onGetUserInfo(userInfo) {
-      this.triggerEvent('getMyUserInfo', { userInfo }, {})
+      if (!userInfo) return
+      this.triggerEvent('getMyUserInfo', JSON.parse(userInfo), {})
     },
   },
 })

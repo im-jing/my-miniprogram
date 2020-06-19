@@ -19,38 +19,32 @@ Page({
    * 已授权: 显示me头像
    */
 
-  // 判断用户是否授权过
+  //  FIXME: 手动清除授权信息后，从别的页面跳转回my页面，应该不显示用户信息
+
+  // 判断用户是否授权过,如果已授权获取用户信息
   getAuthSetting() {
     wx.getSetting({
       success: (res) => {
         const authSetting = res.authSetting['scope.userInfo']
+
         if (authSetting) {
-          this.getStorageUserInfo()
-          this.setData({
-            authorized: true,
+          wx.getUserInfo({
+            success: (data) => {
+              const { userInfo } = data
+              this.setData({
+                authorized: true,
+                userInfo,
+              })
+            },
           })
         }
       },
     })
   },
 
-  getStorageUserInfo() {
-    try {
-      const val = wx.getStorageSync('userInfo')
-      if (val) {
-        const userInfo = JSON.parse(val)
-        this.setData({
-          userInfo,
-        })
-      }
-    } catch (e) {
-      console.debug(e)
-    }
-  },
-
   onGetMyUserInfo(e) {
     this.setData({
-      userInfo: e.detail.userInfo,
+      userInfo: e.detail,
       authorized: true,
     })
   },
