@@ -1,20 +1,20 @@
 <view class="container">
     <image src="/images/my/my@bg.png" class="bg"></image>
     <!-- <open-data type="userAvatarUrl" class="avatar avatar-position"/> -->
-    <!-- <button open-type="getUserInfo" class="avatar-position" bindgetuserinfo="getUserInfo">
-        <image slot="img" class="avatar" src="{{userAvatarSrc}}" />
-    </button> -->
-    <v-button openType="getUserInfo" bind:emitUserInfo="getMyUserInfo">
-      <image slot="img" class="avatar" src="{{userAvatarSrc}}" />
+
+    <v-button
+      class="avatar-position"
+      wx:if="{{!authorized}}"
+      openType="getUserInfo"
+      bind:getMyUserInfo="onGetMyUserInfo"
+    >
+      <image slot="img" class="avatar" src="/images/my/my.png" />
     </v-button>
-    <!-- <v-button wx:if="{{!authorized}}" open-type="getUserInfo" class="avatar-position" bind:getuserinfo="onGetUserInfo">
-        <image slot="img" class="avatar" src="/images/my/my.png" />
-    </v-button> -->
-    <!-- 登录 难点 服务器 微信支付 -->
-    <view wx:if="{{authorized}}" class="avatar-container avatar-position">
-        <image src="{{userInfo.avatarUrl}}" class="avatar" />
-        <text>{{userInfo.nickName}}</text>
+    <view wx:else class="avatar-container avatar-position">
+      <image src="{{userInfo.avatarUrl}}" class="avatar" />
+      <text>{{userInfo.nickName}}</text>
     </view>
+
     <view class="about-container">
         <view bind:tap="onJumpToAbout" class="about-us">
             <image src="/images/my/about.png" />

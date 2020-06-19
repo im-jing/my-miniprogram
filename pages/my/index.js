@@ -1,20 +1,57 @@
-// pages/my/index.js
 Page({
   /**
    * 页面的初始数据
    */
   data: {
-    userAvatarSrc: '/images/my/my.png',
+    userInfo: null,
+    authorized: false,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad() {},
+  onLoad() {
+    this.getAuthSetting()
+  },
 
-  getMyUserInfo(e) {
+  /**
+   * 未授权: 显示click me图片(button)
+   * 已授权: 显示me头像
+   */
+
+  // 判断用户是否授权过
+  getAuthSetting() {
+    wx.getSetting({
+      success: (res) => {
+        const authSetting = res.authSetting['scope.userInfo']
+        if (authSetting) {
+          this.getStorageUserInfo()
+          this.setData({
+            authorized: true,
+          })
+        }
+      },
+    })
+  },
+
+  getStorageUserInfo() {
+    try {
+      const val = wx.getStorageSync('userInfo')
+      if (val) {
+        const userInfo = JSON.parse(val)
+        this.setData({
+          userInfo,
+        })
+      }
+    } catch (e) {
+      console.debug(e)
+    }
+  },
+
+  onGetMyUserInfo(e) {
     this.setData({
-      userAvatarSrc: e.detail.userInfo.avatarUrl,
+      userInfo: e.detail.userInfo,
+      authorized: true,
     })
   },
 })

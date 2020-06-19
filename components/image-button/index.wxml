@@ -1,3 +1,3 @@
 <button open-type="{{openType}}" bindgetuserinfo="getAuthSetting" plain="{{true}}">
-  <slot />
+  <slot name="img" />
 </button>

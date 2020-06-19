@@ -1,4 +1,8 @@
 Component({
+  options: {
+    multipleSlots: true,
+  },
+
   /**
    * 组件的属性列表
    */
@@ -11,13 +15,7 @@ Component({
   /**
    * 组件的初始数据
    */
-  data: {
-    userInfo: null,
-  },
-
-  attached() {
-    // this.getAuthSetting()
-  },
+  data: {},
 
   /**
    * 组件的方法列表
@@ -37,18 +35,16 @@ Component({
     getUserInfo() {
       wx.getUserInfo({
         success: (res) => {
-          console.log(res, '=res=')
           const result = JSON.parse(res.rawData)
-          this.setData({
-            userInfo: result,
-          })
-          this.onGetUserInfo()
-          // wx.storage
+
+          this.onGetUserInfo(result)
+          wx.setStorageSync('userInfo', JSON.stringify(result))
         },
       })
     },
-    onGetUserInfo() {
-      this.triggerEvent('emitUserInfo', { userInfo: this.data.userInfo }, {})
+
+    onGetUserInfo(userInfo) {
+      this.triggerEvent('getMyUserInfo', { userInfo }, {})
     },
   },
 })
